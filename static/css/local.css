@@ -1,0 +1,42 @@
+.display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.indicator-btn {
+    color: black;
+    width: 200px;
+    font-size: 200px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.indicator-btn-on {
+    color: blue;
+}
+
+.remote-indicator {
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+    width: 200px;
+    font-size: 200px;
+    border-radius: 200px;
+    background-color: black;
+    text-align: center;
+}
+
+.remote-indicator-on {
+    color: blue;
+    background-color: white;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotateY(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotateY(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotateY(360deg); transform:rotateY(360deg); } }
+

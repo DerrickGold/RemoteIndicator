@@ -1,0 +1,47 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>Remote Indicator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <style>
+    html body { background-color: black; }
+  </style>  
+</head>
+
+<body>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/local.css')}}">
+  <link rel="stylesheet" type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <script src="{{url_for('static', filename='js/api.js')}}"></script>
+  <script src="{{url_for('static', filename='js/remote.js')}}"></script>
+
+  <script>
+    var Remote;
+    function queryStringToObject (str) {
+      var obj = {}
+      if (!str) return obj
+        if (str[0] == "?") str = str.substr(1)
+        var arr = str.split("&")
+        arr.forEach(function (el) {
+          var a = el.split("=")
+          obj[decodeURIComponent(a[0])] = decodeURIComponent(a[1])
+        })
+        return obj
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+    	var params = queryStringToObject(location.search);
+    	Remote = new IndicatorRemote(params.s);
+    });
+  </script>
+  
+  <div class="display">
+    <div class="remote-indicator" role="remote-indicator">
+      <i class="fa fa-question-circle" aria-hidden="true"></i>
+    </div>
+  </div>
+</body>
+</html>
