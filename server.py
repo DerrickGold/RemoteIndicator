@@ -3,14 +3,19 @@ from flask import Flask, render_template, jsonify
 import os
 import time
 import uuid
+import sys
+import logging
+from flask_compress import Compress
 
-
-
-PORT_NUM = 5000
-TEMPLATE_DIR = "static/templates"
+GLOBAL_SETTINGS = {
+    'port': 5000,
+    'templates': "static/templates"
+}
 GLOBAL_SESSIONS = {}
 
-app = Flask(__name__, template_folder=os.path.abspath(TEMPLATE_DIR))
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+app = Flask(__name__, template_folder=os.path.abspath(GLOBAL_SETTINGS['templates']))
+Compress(app)
 
 class Session:
     #set session time to live for 6 hours
@@ -108,6 +113,20 @@ def toggleState(sessionid):
 
 
 
+def args():
+    # get port number
+    try:
+        idx = sys.argv.index('-p')
+        if idx + 1 < len(sys.argv):
+            GLOBAL_SETTINGS['port'] = sys.argv[idx + 1]
+        else:
+            logging.error("Missing port value!")
+            exit(1)
+    except:
+        logging.info("Using default port: {}".format(GLOBAL_SETTINGS['port']))
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', threaded=True, port=PORT_NUM)
+    args()
+    app.run(host='0.0.0.0', threaded=True, port=GLOBAL_SETTINGS['port'])
     

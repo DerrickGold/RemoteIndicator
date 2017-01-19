@@ -5,17 +5,42 @@
     transform: translate(-50%, -50%);
 }
 
+.indicator-controls {
+    text-align: center;
+}
+
 .indicator-btn {
     color: black;
     width: 200px;
     font-size: 200px;
     cursor: pointer;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 200px;
+    background-color: red;
+}
+
+.indicator-desc {
+    padding: 20px;
 }
 
 .indicator-btn-on {
-    color: blue;
+    color: white;
+    background-color: green;
 }
+
+.remote-url-msg {
+    text-align: center;
+    background-color: lightgrey;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.remote-url-text {
+    font-size: 20px;
+}
+
 
 .remote-indicator {
     margin-left: auto;

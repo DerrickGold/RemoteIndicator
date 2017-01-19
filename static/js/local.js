@@ -1,3 +1,20 @@
+function CopyToClipboard(obj) {
+  if (document.selection) { 
+    var range = document.body.createTextRange();
+    range.moveToElementText(obj);
+    range.select().createTextRange();
+    document.execCommand("Copy"); 
+    
+  } else if (window.getSelection) {
+    var range = document.createRange();
+    range.selectNode(obj);
+    window.getSelection().addRange(range);
+    document.execCommand("Copy");
+    
+  }
+  alert("Copied URL to clipboard.");
+}
+
 IndicatorLocal = function() {
   this.sessionID = null;
   this.indicatorBtn = document.querySelector('[role="indicate-btn"]');
@@ -9,20 +26,28 @@ IndicatorLocal.prototype = new ApiObj();
 
 IndicatorLocal.prototype.init = function() {  
   var self = this;
+  self.resizeDisplay();
+  
   this.apiCall("/api/new", "GET", true, function(resp) {
     var result = JSON.parse(resp);
     if (result.status == 200) {
       self.sessionID = result.id;
       self.getState();
-      self.remoteUrl.innerHTML = window.location.href + "remote?s=" + self.sessionID;
+
+      var url = window.location.href + "remote?s=" + self.sessionID;
+      self.remoteUrl.innerHTML = url;
     }
     else {
       console.log("Critical! Failed to create a new session.");
     }
   });
 
-  this.indicatorBtn.onclick = function(evt) {
-    self.toggleState();
+  self.indicatorBtn.onclick = function(evt) { self.toggleState(); }
+  window.onresize = function() { self.resizeDisplay(); }
+
+  self.remoteUrl.onclick = function(e) {
+    e.preventDefault();
+    CopyToClipboard(self.remoteUrl);
   }
 }
 
@@ -50,4 +75,12 @@ IndicatorLocal.prototype.toggleState = function() {
 
 IndicatorLocal.prototype.setButton = function(state) {
   this.indicatorBtn.classList.toggle("indicator-btn-on", state);
+}
+
+IndicatorLocal.prototype.resizeDisplay = function() {
+  var dim = (window.innerWidth < window.innerHeight) ? window.innerWidth : window.innerHeight;
+  var size = parseInt(dim/2) + "px";
+  this.indicatorBtn.style.fontSize = size;
+  this.indicatorBtn.style.borderRadius = size;
+  this.indicatorBtn.style.width = size;
 }
